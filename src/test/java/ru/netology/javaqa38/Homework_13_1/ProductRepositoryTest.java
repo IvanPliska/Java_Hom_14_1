@@ -1,6 +1,7 @@
 package ru.netology.javaqa38.Homework_13_1;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 public class ProductRepositoryTest {
@@ -15,44 +16,30 @@ public class ProductRepositoryTest {
     Smartphone smartphone_2 = new Smartphone(2, "Siemens", 45_000);
     Smartphone smartphone_3 = new Smartphone(3, "Nokia", 25_000);
 
-    Product product_1 = new Product(1,"Iphone", 60_0000);
+    Product product_1 = new Product(1, "Iphone", 60_0000);
 
     @Test
-    public void findAllBook () {
+    public void findAllBook() {
         repository.add(book_1);
         repository.add(book_2);
         repository.add(book_3);
 
-        Product[] actual = {book_1,book_2,book_3};
+        Product[] actual = {book_1, book_2, book_3};
         Product[] expected = repository.findAll();
 
-        assertArrayEquals(actual,expected);
+        assertArrayEquals(actual, expected);
     }
 
     @Test
-    public void findAllSmartphone () {
+    public void findAllSmartphone() {
         repository.add(smartphone_1);
         repository.add(smartphone_2);
         repository.add(smartphone_3);
 
-        Product[] actual = {smartphone_1,smartphone_2,smartphone_3};
+        Product[] actual = {smartphone_1, smartphone_2, smartphone_3};
         Product[] expected = repository.findAll();
 
-        assertArrayEquals(actual,expected);
-    }
-
-    @Test
-
-    public void removeBook () {
-        repository.add(book_1);
-        repository.add(book_2);
-        repository.add(book_3);
-        repository.removeById(book_1.getId());
-
-        Product[] actual = {book_2,book_3};
-        Product[] expected = repository.findAll();
-
-        assertArrayEquals(actual,expected);
+        assertArrayEquals(actual, expected);
     }
 
     @Test
@@ -67,10 +54,35 @@ public class ProductRepositoryTest {
         repository.add(smartphone_3);
 
 
-        Product[] actual = {product_1, book_1,book_2, book_3, smartphone_1, smartphone_2, smartphone_3};
+        Product[] actual = {product_1, book_1, book_2, book_3, smartphone_1, smartphone_2, smartphone_3};
         Product[] expected = repository.findAll();
 
-        assertArrayEquals(actual,expected);
+        assertArrayEquals(actual, expected);
     }
 
+    @Test // Тест на удаление существующего элемента
+
+    public void removeBook() {
+        repository.add(book_1);
+        repository.add(book_2);
+        repository.add(book_3);
+        repository.removeById(book_1.getId());
+
+        Product[] actual = {book_2, book_3};
+        Product[] expected = repository.findAll();
+
+        assertArrayEquals(actual, expected);
+    }
+
+    @Test // Тест на удаление несуществующего элемента
+
+    public void removeBookException() {
+        repository.add(book_1);
+        repository.add(book_2);
+        repository.add(book_3);
+
+        assertThrows(NotFoundException.class, () -> {
+            repository.removeById(-5);
+        });
+    }
 }
